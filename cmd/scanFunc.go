@@ -25,6 +25,9 @@ func scanPorts(ip, protocol, targetPorts string) error {
 }
 
 func parsePortsArg(portsArg string) ([]int, error) {
+	if portsArg == "" {
+		return []int{0, portsNumber}, nil
+	}
 	re, _ := regexp.Compile(regexpPattern)
 	matches := re.FindStringSubmatch(portsArg)
 	if len(matches) == 0 {
@@ -50,8 +53,6 @@ func checkPorts(ip string, protocol string, startPort, endPort int) error {
 		if err == nil {
 			defer conn.Close()
 			fmt.Printf("Порт %d (%s) - открыт\n", port, protocol)
-		} else {
-			fmt.Printf("Порт %d (%s) - закрыт\n", port, protocol)
 		}
 	}
 	return nil
